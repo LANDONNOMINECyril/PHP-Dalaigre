@@ -1,0 +1,24 @@
+[
+    {
+        "uuid": "1",
+        "type": "radio",
+        "label": "Question 1",
+        "choices": [
+            "Rep 1",
+            "Rep 2",
+            "Rep 3"
+        ],
+        "correct": "Rep 2"
+    },
+    {
+        "uuid": "2",
+        "type": "radio",
+        "label": "Question 2",
+        "choices": [
+            "Rep 1",
+            "Rep 2",
+            "Rep 3"
+        ],
+        "correct": "Rep 3"
+    }
+]
