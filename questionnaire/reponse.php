@@ -7,7 +7,7 @@
     use Action\Form;
 
     $fichier = 'test.json';
-    if ($_REQUEST != null) {
+    if (isset($_REQUEST['fichier'])) {
         $fichier = $_REQUEST['fichier'];
     }
     $provider = new Provider($fichier);
@@ -19,24 +19,24 @@
     <head>
         <meta charset="utf-8">
         <title>Questionnaire</title>
+        <link rel="stylesheet" href="style.css">
     </head>
     <body>
         <?php
-            $html = '<form>';
+            echo '<form>';
             foreach ($form->getQuestions() as $question) {
-                $html .= '<fieldset>';
-                $html .= '<legend>' . $label . '</legend>';
-                echo $question->display();
-                foreach ($qestion->getChoices() as $choix) {
-                    $html .= '<div>';
-                    $html .= '<input type=' . $type . ' id=' . $choix . ' name=' . $label . ' value=' . $choix . 'disabled/>';
-                    $html .= '<label for=' . $choix . '>' . $choix . '</label>';
-                    $html .= '</div>';
-                }
-                $html .= '</fieldset>';
+                echo '<fieldset>';
+                echo '<legend>' . $question->getLabel() . '</legend>';
+                foreach ($question->getChoices() as $choix) {
+                    echo '<div>';
+                    echo '<input type="' . $question->getType() . '" id="' . $choix . '" name="' . $question->getLabel() . '" value="' . $choix . '" disabled/>';
+                    if ($question->getAnswer() === $choix) {echo '<label for="' . $choix . '" class="answer">' . $choix . '</label>';}
+                    else {echo '<label for="' . $choix . '">' . $choix . '</label>';}
+                    echo '</div>';
+                } echo "<p>Réponse: " . $question->getAnswer() . "</p>";
+                echo '</fieldset>';
             }
-            $html .= '</form>';
-            return $html;
+            echo '</form>';
         ?>
     </body>
 </html>

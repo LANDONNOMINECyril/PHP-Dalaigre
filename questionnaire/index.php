@@ -8,7 +8,7 @@
     use Quizz\Radio;
 
     $fichier = 'test.json';
-    if ($_REQUEST != null) {
+    if (isset($_REQUEST['fichier'])) {
         $fichier = $_REQUEST['fichier'];
     }
     $provider = new Provider($fichier);

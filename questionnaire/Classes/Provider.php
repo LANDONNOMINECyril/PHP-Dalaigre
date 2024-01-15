@@ -12,8 +12,8 @@
         private $fichier;
 
         public function __construct($fichier) {
-            $this->data = json_decode(file_get_contents('data/'.$fichier), true);
             $this->fichier = $fichier;
+            $this->data = json_decode(file_get_contents('data/'.$fichier), true);
         }
 
         public function getForm(): Form {
@@ -33,7 +33,7 @@
                         break;
                 }
             }
-            return new Form('data/'.$fichier, $questions);
+            return new Form('data/'.$this->fichier, $questions);
         }
     }
 ?>
