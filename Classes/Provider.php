@@ -1,7 +1,7 @@
 <?php
     declare(strict_types=1);
 
-    require 'data/test.json';
+    // require 'data/test.json'; // je sais pas ce que ça fait mais c'est ça qui fait le print chelou
 
     use Action\Form;
     use Quizz\Radio;

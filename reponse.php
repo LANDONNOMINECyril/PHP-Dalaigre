@@ -12,6 +12,10 @@
     }
     $provider = new Provider($fichier);
     $form = $provider->getForm();
+
+    function modifFormat(string $label): string {
+        return str_replace(" ", "_", $label);
+    }
 ?>
 
 <!DOCTYPE html>
@@ -28,12 +32,17 @@
                 echo '<fieldset>';
                 echo '<legend>' . $question->getLabel() . '</legend>';
                 foreach ($question->getChoices() as $choix) {
+                    $labelPOST = modifFormat($question->getLabel());
                     echo '<div>';
-                    echo '<input type="' . $question->getType() . '" id="' . $choix . '" name="' . $question->getLabel() . '" value="' . $choix . '" disabled/>';
+                    if($_POST[$labelPOST] === $choix){
+                        echo '<input type="' . $question->getType() . '" id="' . $question->getId() . '" name="' . $question->getLabel() . '" value="' . $choix . '" checked disabled/>';
+                    } else {
+                        echo '<input type="' . $question->getType() . '" id="' . $question->getId() . '" name="' . $question->getLabel() . '" value="' . $choix . '" disabled/>';
+                    }
                     if ($question->getAnswer() === $choix) {echo '<label for="' . $choix . '" class="answer">' . $choix . '</label>';}
                     else {echo '<label for="' . $choix . '">' . $choix . '</label>';}
                     echo '</div>';
-                } echo "<p>Réponse: " . $question->getAnswer() . "</p>";
+                } echo '<p>Réponse: ' . $question->getAnswer() . '</p>';
                 echo '</fieldset>';
             }
             echo '</form>';
