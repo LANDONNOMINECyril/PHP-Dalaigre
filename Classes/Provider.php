@@ -13,7 +13,11 @@
 
         public function __construct($fichier) {
             $this->fichier = $fichier;
-            $this->data = json_decode(file_get_contents('data/'.$fichier), true);
+            if (strpos($fichier, "data/") === 0) {
+                $this->data = json_decode(file_get_contents($this->fichier), true);
+            } else {
+                $this->data = json_decode(file_get_contents("data/" . $this->fichier), true);
+            }
         }
 
         public function getForm(): Form {

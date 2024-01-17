@@ -23,7 +23,7 @@
         }
 
         public function display(): string {
-            $html = '<form action="reponse.php" method="post">';
+            $html = '<form action="reponse.php?' . $this->fichier . '" method="post">';
             foreach ($this->questions as $question) {
                 $html .= $question->display();
             }
