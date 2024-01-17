@@ -32,6 +32,7 @@
                 echo '<fieldset>';
                 echo '<legend>' . $question->getLabel() . '</legend>';
                 foreach ($question->getChoices() as $choix) {
+                    $class = '';
                     $labelPOST = modifFormat($question->getLabel());
                     echo '<div>';
                     if($_POST[$labelPOST] === $choix){
@@ -39,8 +40,9 @@
                     } else {
                         echo '<input type="' . $question->getType() . '" id="' . $question->getId() . '" name="' . $question->getLabel() . '" value="' . $choix . '" disabled/>';
                     }
-                    if ($question->getAnswer() === $choix) {echo '<label for="' . $choix . '" class="answer">' . $choix . '</label>';}
-                    else {echo '<label for="' . $choix . '">' . $choix . '</label>';}
+                    if ($question->getAnswer() === $choix) {$class .= "answer";}
+                    else if ($_POST[$labelPOST] === $choix) {$class .= "wrong";}
+                    echo '<label for="' . $choix . '" class=' . $class . '>' . $choix . '</label>';
                     echo '</div>';
                 } echo '<p>Réponse: ' . $question->getAnswer() . '</p>';
                 echo '</fieldset>';
