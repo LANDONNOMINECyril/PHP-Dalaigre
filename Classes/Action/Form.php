@@ -24,7 +24,6 @@
 
         public function display(): string {
             $html = '<form action="reponse.php" method="post">';
-            echo '<h1>' . $this->fichier . '</h1>';
             foreach ($this->questions as $question) {
                 $html .= $question->display();
             }
