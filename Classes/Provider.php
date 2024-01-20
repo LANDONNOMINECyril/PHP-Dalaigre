@@ -12,12 +12,9 @@
         private $fichier;
 
         public function __construct($fichier) {
-            $this->fichier = $fichier;
-            if (strpos($fichier, "data/") === 0) {
-                $this->data = json_decode(file_get_contents($this->fichier), true);
-            } else {
-                $this->data = json_decode(file_get_contents("data/" . $this->fichier), true);
-            }
+            if (strpos($fichier, "data/") === 0) {$this->fichier = $fichier;}
+            else {$this->fichier = "data/" . $fichier;}
+            $this->data = json_decode(file_get_contents($this->fichier), true);
         }
 
         public function getForm(): Form {
@@ -37,7 +34,7 @@
                         break;
                 }
             }
-            return new Form('data/'.$this->fichier, $questions);
+            return new Form($this->fichier, $questions);
         }
     }
 ?>

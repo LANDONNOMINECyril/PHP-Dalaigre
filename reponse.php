@@ -14,7 +14,9 @@
     $form = $provider->getForm();
 
     function modifFormat(string $label): string {
-        return str_replace(" ", "_", $label);
+        $chaine = str_replace(" ", "_", $label);
+        $chaine = str_replace(".", "_", $chaine);
+        return $chaine;
     }
 ?>
 
