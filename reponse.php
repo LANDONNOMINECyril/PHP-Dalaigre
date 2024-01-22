@@ -67,5 +67,8 @@
             echo '<p>Total: ' . $pointsFormulaire . "/" . $totalPoints . '</p>';
             echo '</form>';
         ?>
+        <a href="index.php">
+            <button>Retour à l'accueil</button>
+        </a>
     </body>
 </html>
