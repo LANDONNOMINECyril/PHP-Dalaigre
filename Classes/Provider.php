@@ -1,86 +1,62 @@
 <?php
+    // Déclare que les types stricts doivent être utilisés dans ce fichier
     declare(strict_types=1);
 
-    require 'bd.php';
 
+    // Utilise les classes Form et Radio des namespaces Action et Quizz respectivement
     use Action\Form;
     use Quizz\Radio;
 
+    // Définit la classe Provider
     class Provider {
 
+        // Propriétés privées pour stocker les données et le nom du fichier
         private $data;
         private $fichier;
 
+        // Constructeur de la classe, prend le nom du fichier en paramètre
         public function __construct($fichier) {
-            if (strpos($fichier, "data/") === 0) {$this->fichier = $fichier;}
-            else {$this->fichier = "data/" . $fichier;}
+            // Vérifie si le nom du fichier commence par "data/"
+            if (strpos($fichier, "data/") === 0) {
+                $this->fichier = $fichier;
+            } else {
+                // Ajoute "data/" au début du nom du fichier s'il n'est pas présent
+                $this->fichier = "data/" . $fichier;
+            }
+
+            // Charge les données à partir du fichier JSON et les décoder
             $this->data = json_decode(file_get_contents($this->fichier), true);
         }
 
+        // Méthode pour obtenir un formulaire à partir des données
         public function getForm(): Form {
-            // $questions = [];
-            // foreach ($this->data as $question) {
-            //     $id = $question["uuid"];
-            //     $id = intval($id);
-            //     $type = $question["type"];
-            //     $label = $question["label"];
-            //     $points = $question["points"];
-            //     $points = intval($points);
-            //     switch ($type) {
-            //         case 'radio':
-            //             $choices = $question["choices"];
-            //             $correct = $question["correct"];
-            //             array_push($questions, new Radio($id, $label, $choices, $correct, $points));
-            //             break;
-            //         default:
-            //             break;
-            //     }
-            // }
-            $query = 'SELECT nom FROM FORMULAIRE WHERE nom = "' . $this->fichier . '"';
-            $result = $db->query($query);
-            if ($result->fetchArray() === false) {
-                $provider = new Provider($this->fichier);
-                $form = $provider->getForm();
-                $query = 'INSERT INTO FORMULAIRE (nom) VALUES ("' . $this->fichier . '")';
-                $db->exec($query);
-                $query = 'SELECT id FROM FORMULAIRE WHERE nom = "' . $this->fichier . '"';
-                $resId = $db->query($query);
-                $idForm = $resId->fetchArray()['id'];
-                foreach ($form->getQuestions() as $question) {
-                    $query = 'INSERT INTO QUESTION (id, uuid, typeQ, label, correct, points) VALUES (' . $idForm . ', ' . $question->getId() . ', "' . $question->getType() . '", "' . $question->getLabel() . '", "' . $question->getAnswer() . '", ' . $question->getPoints() . ')';
-                    $db->exec($query);
-                    foreach ($question->getChoices() as $choix) {
-                        $query = 'INSERT INTO CHOIX (uuid, nom) VALUES (' . $question->getId() . ', "' . $choix . '")';
-                        $db->exec($query);
-                    }
-                }
-            } else {
-                // charger le formulaire en BD
-                $query = 'SELECT * FROM FORMULAIRE WHERE nom = "' . $this->fichier . '"';
-                $resultForm = $db->query($query);
-                $row = $resultForm->fetchArray();
-                echo $row['id'];
-                $query = 'SELECT * FROM QUESTION WHERE id = ' . $row['id'];
-                $resultQuestions = $db->query($query);
-                $questions = [];
-                foreach ($resultQuestions as $question) {
-                    $id = $question["uuid"];
-                    $id = intval($id);
-                    $type = $question["type"];
-                    $label = $question["label"];
-                    $points = $question["points"];
-                    $points = intval($points);
-                    switch ($type) {
-                        case 'radio':
-                            $choices = $question["choices"];
-                            $correct = $question["correct"];
-                            array_push($questions, new Radio($id, $label, $choices, $correct, $points));
-                            break;
-                        default:
-                            break;
-                    }
+
+            // Tableau pour stocker les questions
+            $questions = [];
+
+            // Parcourt chaque question dans les données
+            foreach ($this->data as $question) {
+                // Récupère les attributs de la question depuis les données
+                $id = intval($question["uuid"]);
+                $type = $question["type"];
+                $label = $question["label"];
+                $points = intval($question["points"]);
+
+                // Selon le type de question, crée une instance appropriée de la classe Question
+                switch ($type) {
+                    case 'radio':
+                        $choices = $question["choices"];
+                        $correct = $question["correct"];
+                        // Ajoute une nouvelle instance de Radio au tableau de questions
+                        array_push($questions, new Radio($id, $label, $choices, $correct, $points));
+                        break;
+                    default:
+                        // Cas par défaut (peut être étendu pour d'autres types de questions)
+                        break;
                 }
             }
+
+            // Retourne une nouvelle instance de Form avec les questions obtenues
             return new Form($this->fichier, $questions);
         }
     }
