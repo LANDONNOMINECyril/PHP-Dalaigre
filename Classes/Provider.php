@@ -2,6 +2,7 @@
     // Déclare que les types stricts doivent être utilisés dans ce fichier
     declare(strict_types=1);
 
+
     // Utilise les classes Form et Radio des namespaces Action et Quizz respectivement
     use Action\Form;
     use Quizz\Radio;
@@ -29,6 +30,7 @@
 
         // Méthode pour obtenir un formulaire à partir des données
         public function getForm(): Form {
+
             // Tableau pour stocker les questions
             $questions = [];
 

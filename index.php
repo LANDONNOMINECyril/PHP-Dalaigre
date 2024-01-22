@@ -10,6 +10,7 @@
 
     // Enregistre l'autoloader pour charger automatiquement les classes
     Autoloader::register();
+    require 'bd.php';
 
     // Utilise les classes Form, Radio, Bd, et Provider
     use Action\Form;
@@ -21,7 +22,6 @@
     if (isset($_REQUEST['fichier'])) {
         $fichier = $_REQUEST['fichier'];
     }
-
     // Crée une instance de la classe Provider avec le chemin du fichier JSON
     $provider = new Provider($fichier);
 
