@@ -1,13 +1,13 @@
 <?php
     declare(strict_types=1);
-    
+    require_once "data/Bd.php";
     require 'Classes/autoloader.php';
     Autoloader::register();
 
     use Action\Form;
     use Quizz\Radio;
-
-    $fichier = 'test.json';
+    use BDD\Bd;
+    $fichier = getJson();
     if (isset($_REQUEST['fichier'])) {
         $fichier = $_REQUEST['fichier'];
     }
