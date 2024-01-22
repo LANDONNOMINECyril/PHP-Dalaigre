@@ -9,13 +9,16 @@
         private string $label;
         private $choices;
         private string $answer;
+        private int $points;
         
-        public function __construct(int $id, string $type, string $label, array $choices, string $answer) {
+        public function __construct(int $id, string $type, string $label, array $choices, string $answer, int $points) {
             $this->id = $id;
             $this->type = $type;
             $this->label = $label;
             $this->choices = $choices;
             $this->answer = $answer;
+            $this->points = $points;
+            
         }
 
         public function display(): string {
@@ -49,6 +52,10 @@
 
         public function getAnswer(): string {
             return $this->answer;
+        }
+
+        public function getPoints(): int {
+            return $this->points;
         }
     }
 ?>

@@ -7,8 +7,8 @@
 
     class Radio extends Question{
 
-        public function __construct(int $id, string $label, array $choices, string $answer) {
-            parent::__construct($id, "radio", $label, $choices, $answer);
+        public function __construct(int $id, string $label, array $choices, string $answer, int $points) {
+            parent::__construct($id, "radio", $label, $choices, $answer, $points);
         }
 
         public function display(): string {

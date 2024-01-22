@@ -29,8 +29,11 @@
     </head>
     <body>
         <?php
+            $pointsFormulaire = 0;
+            $totalPoints = 0;
             echo '<form>';
             foreach ($form->getQuestions() as $question) {
+                $pointsQuestion = 0;
                 echo '<fieldset>';
                 echo '<legend>' . $question->getLabel() . '</legend>';
                 foreach ($question->getChoices() as $choix) {
@@ -42,13 +45,22 @@
                     } else {
                         echo '<input type="' . $question->getType() . '" id="' . $question->getId() . '" name="' . $question->getLabel() . '" value="' . $choix . '" disabled/>';
                     }
+                    // couleurs
                     if ($question->getAnswer() === $choix) {$class .= "answer";}
                     else if ($_POST[$labelPOST] === $choix) {$class .= "wrong";}
+                    //points
+                    if ($question->getAnswer() === $choix && $_POST[$labelPOST] === $choix) {
+                        $pointsFormulaire+=$question->getPoints();
+                        $pointsQuestion+=$question->getPoints();
+                    }
                     echo '<label for="' . $choix . '" class=' . $class . '>' . $choix . '</label>';
                     echo '</div>';
-                } echo '<p>Réponse: ' . $question->getAnswer() . '</p>';
+                } $totalPoints+=$question->getPoints();
+                echo '<p>Points: ' . $pointsQuestion . "/" . $question->getPoints() . '</p>';
+                echo '<p>Réponse: ' . $question->getAnswer() . '</p>';
                 echo '</fieldset>';
             }
+            echo '<p>Total: ' . $pointsFormulaire . "/" . $totalPoints . '</p>';
             echo '</form>';
         ?>
     </body>

@@ -8,7 +8,8 @@
             "Rep 2",
             "Rep 3"
         ],
-        "correct": "Rep 2"
+        "correct": "Rep 2",
+        "points": 1
     },
     {
         "uuid": "2",
@@ -19,6 +20,7 @@
             "Rep 2",
             "Rep 3"
         ],
-        "correct": "Rep 3"
+        "correct": "Rep 3",
+        "points": 2
     }
 ]

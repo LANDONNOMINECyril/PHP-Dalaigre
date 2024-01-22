@@ -24,11 +24,13 @@
                 $id = intval($id);
                 $type = $question["type"];
                 $label = $question["label"];
+                $points = $question["points"];
+                $points = intval($points);
                 switch ($type) {
                     case 'radio':
                         $choices = $question["choices"];
                         $correct = $question["correct"];
-                        array_push($questions, new Radio($id, $label, $choices, $correct));
+                        array_push($questions, new Radio($id, $label, $choices, $correct, $points));
                         break;
                     default:
                         break;
