@@ -2,7 +2,7 @@
 function getJson(){
     try {
         // Connexion à la base de données
-        $file_db = new PDO('sqlite:contacts.sqlite3');
+        $file_db = new PDO('sqlite:formulaire.sqlite3');
         $file_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
         
         // Création de la table si elle n'existe pas
@@ -18,6 +18,9 @@ function getJson(){
         // Requête d'insertion préparée
         $insert = "INSERT INTO Formulaire (id, json_path) VALUES (:id, :json_path)";
         $stmt = $file_db->prepare($insert);
+
+        // Déclaration de la variable $id à l'extérieur de la boucle foreach
+        $id = null;
         
         foreach ($data as $row) {
             $id = $row['id'];
