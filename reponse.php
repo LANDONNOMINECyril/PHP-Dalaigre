@@ -3,6 +3,9 @@
     
     require 'Classes/autoloader.php';
     Autoloader::register();
+    require 'bd.php';
+
+    $numEssai = $db->exec($queryMaxIdEssai) + 1;
 
     use Action\Form;
 
@@ -10,6 +13,7 @@
     if (isset($_REQUEST['fichier'])) {
         $fichier = $_REQUEST['fichier'];
     }
+    // prendre le fichier de la BD à la place du provider
     $provider = new Provider($fichier);
     $form = $provider->getForm();
 
