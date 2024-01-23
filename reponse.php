@@ -86,7 +86,6 @@
                     echo '<label for="' . $choix . '" class=' . $class . '>' . $choix . '</label>';
                     echo '</div>';
                 }
-                $totalPoints += $question->getPoints();
                 echo '<p>Points: ' . $pointsQuestion . "/" . $question->getPoints() . '</p>';
                 echo '<p>Réponse: ' . $question->getAnswer() . '</p>';
 
