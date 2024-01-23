@@ -24,8 +24,17 @@
                 $this->fichier = "data/" . $fichier;
             }
 
-            // Charge les données à partir du fichier JSON et les décoder
-            $this->data = json_decode(file_get_contents($this->fichier), true);
+            // Charge le contenu du fichier JSON et le décode en tant que tableau associatif
+            try { // si problème avec le fichier, utiliser le fichier test.json
+                $this->data = json_decode(file_get_contents($this->fichier), true);
+            } catch (\Throwable $th) {
+                $this->fichier = "data/test.json";
+                $this->data = json_decode(file_get_contents($this->fichier), true);
+            }
+        }
+
+        public function getFichier(): string {
+            return $this->fichier;
         }
 
         // Méthode pour obtenir un formulaire à partir des données

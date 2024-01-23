@@ -34,6 +34,14 @@
             return $this->questions;
         }
 
+        public function getNbPoints(): int {
+            $nbPoints = 0;
+            foreach ($this->questions as $question) {
+                $nbPoints += $question->getPoints();
+            }
+            return $nbPoints;
+        }
+
         // Méthode pour générer le code HTML du formulaire
         public function display(): string {
             // Initialise le code HTML du formulaire avec l'action et la méthode de soumission

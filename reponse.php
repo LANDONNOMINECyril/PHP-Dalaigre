@@ -7,9 +7,8 @@
 
     // Enregistre l'autoloader pour charger automatiquement les classes
     Autoloader::register();
-    require 'bd.php';
 
-    $numEssai = $db->exec($queryMaxIdEssai) + 1;
+    require "bd.php";
 
     // Utilise la classe Form du namespace Action
     use Action\Form;
@@ -29,6 +28,20 @@
         $chaine = str_replace(".", "_", $chaine);
         return $chaine;
     }
+
+    // Enregistrer le formulaire dans la bd s'il n'y est pas encore
+    $query = "SELECT * FROM FORMULAIRE WHERE nom_fichier = '" . $provider->getFichier() . "'";
+    $result = $db->query($query);
+    if ($result->fetchArray() == 0) {
+        $query = "INSERT INTO FORMULAIRE (nom_fichier, contenu, nb_points) VALUES ('" . $provider->getFichier() . "', '" . file_get_contents($provider->getFichier()). "', " . $form->getNbPoints() . ")";
+        $db->exec($query);
+    }
+
+    // récupérer l'id du formulaire
+    $query = "SELECT id_form FROM FORMULAIRE WHERE nom_fichier = '" . $provider->getFichier() . "'";
+    $result = $db->query($query);
+    $row = $result->fetchArray();
+    $id_form = $row['id_form'];
 ?>
 
 <!DOCTYPE html>
@@ -43,7 +56,6 @@
         <?php
             // Initialise les variables pour les points
             $pointsFormulaire = 0;
-            $totalPoints = 0;
 
             // Affiche le formulaire avec les réponses et les points
             echo '<form>';
@@ -77,14 +89,31 @@
                 $totalPoints += $question->getPoints();
                 echo '<p>Points: ' . $pointsQuestion . "/" . $question->getPoints() . '</p>';
                 echo '<p>Réponse: ' . $question->getAnswer() . '</p>';
+
                 echo '</fieldset>';
             }
-            echo '<p>Total: ' . $pointsFormulaire . "/" . $totalPoints . '</p>';
-            echo '</form>';
+
+            // Affichage du total des points du formulaire
+            echo '<p>Total: ' . $pointsFormulaire . "/" . $form->getNbPoints() . '</p>';
+            echo '</form';
+
+            // Enregistrer les points dans la bd
+            $query = "INSERT INTO SCORE (id_form, nb_points) VALUES (" . $id_form . ", " . $pointsFormulaire . ")";
+            $db->exec($query);
+
+            // afficher la moyenne des points du formulaire
+            $query = "SELECT AVG(nb_points) FROM SCORE WHERE id_form = " . $id_form;
+            $result = $db->query($query);
+            $row = $result->fetchArray();
+            if ($row['AVG(nb_points)'] == null) {
+                echo '<p>Moyenne générale du formulaire: -/' . $form->getNbPoints() . '</p>';
+            } else {
+                echo '<p>Moyenne générale du formulaire: ' . $row['AVG(nb_points)'] . "/" . $form->getNbPoints() . '</p>';
+            }
         ?>
         <!-- Lien pour retourner à l'accueil -->
         <a href="index.php">
-            <button>Retour à l'accueil</button>
+            <button type="button">Retour à l'accueil</button>
         </a>
     </body>
 </html>
